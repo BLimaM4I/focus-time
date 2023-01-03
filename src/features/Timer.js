@@ -7,6 +7,7 @@ import { RoundedButton } from "../components/RoundedButton";
 import { spacing } from "../utils/sizes";
 import { colors } from "../utils/colors";
 import Timing from "./Timing";
+import { useKeepAwake } from "expo-keep-awake";
 
 const ONE_SECOND_IN_MS = 1000;
 
@@ -19,9 +20,17 @@ const PATTERN = [
 ];
 
 export const Timer = ({ focusSubject, clearSubject }) => {
+  useKeepAwake();
   const [isStarted, setIsStarted] = useState(false);
   const [progress, setProgress] = useState(1);
   const [minutes, setMinutes] = useState(0.1);
+
+  const onEnd = (reset) => {
+    Vibration.vibrate(PATTERN);
+    setIsStarted(false);
+    setProgress(1);
+    reset();
+  };
 
   return (
     <View style={styles.container}>
@@ -30,9 +39,7 @@ export const Timer = ({ focusSubject, clearSubject }) => {
           minutes={minutes}
           isPaused={!isStarted}
           onProgress={setProgress}
-          onEnd={() => {
-            Vibration.vibrate(PATTERN);
-          }}
+          onEnd={onEnd}
         />
         <View style={{ paddingTop: spacing.xxl }}>
           <Text style={styles.title}>Focusing on:</Text>
