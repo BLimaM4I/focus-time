@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
+
 import { fontSizes, spacing } from '../utils/sizes';
 import { colors } from '../utils/colors';
 
